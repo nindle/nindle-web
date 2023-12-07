@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "max build",
+    "dev": "max dev",
+    "postinstall": "max setup",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@ant-design/pro-components": "^2.6.35",
+    "antd": "^5.11.0",
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.10"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config-react": "^0.43.1",
+    "@types/crypto-js": "^4.2.1",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.36",
+    "@types/react-dom": "^18.2.14",
+    "@umijs/max": "^4.0.87",
+    "eslint": "^8.53.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint"
+  }
+}
