@@ -5,17 +5,19 @@ const Header = () => {
   return (
     <>
       <div className="flex m-auto">
-        {routes.map((item, index) => {
-          return (
-            <div
-              className="mx-[30px]"
-              key={index}
-              onClick={() => history.push(item.path)}
-            >
-              {item.name}
-            </div>
-          )
-        })}
+        {routes
+          .filter((e) => e.name)
+          .map((item, index) => {
+            return (
+              <div
+                className="mx-[30px] w-[100px] text-center hover:text-[#a94b4b]"
+                key={index}
+                onClick={() => history.push(item.path)}
+              >
+                {item.name}
+              </div>
+            )
+          })}
       </div>
     </>
   )

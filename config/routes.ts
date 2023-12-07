@@ -12,32 +12,28 @@
  */
 export default [
   {
-    path: '/welcome',
+    path: '/',
     name: '首页',
     icon: 'HomeOutlined',
-    component: './Welcome',
+    component: './Home',
   },
   {
-    path: '/lead',
-    name: '博客',
+    path: '/notes',
+    name: '笔记',
     icon: 'BranchesOutlined',
-    component: './Welcome',
+    component: './Notes',
   },
   {
-    path: '/customer',
+    path: '/project',
     name: '项目',
     icon: 'TeamOutlined',
-    component: './Customer/My',
+    component: './Project',
   },
   {
-    path: '/order',
-    name: '技术',
+    path: '/message',
+    name: '留言板',
     icon: 'AuditOutlined',
-    component: './Order/List',
-  },
-  {
-    path: '/',
-    redirect: '/welcome',
+    component: './Message',
   },
   {
     path: '*',

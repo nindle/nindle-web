@@ -1,7 +1,7 @@
 import type { ProLayoutProps } from '@ant-design/pro-components'
 
 const Settings: ProLayoutProps & { pwa?: boolean; logo?: string } = {
-  title: 'Adminify',
+  title: 'Nindle',
   navTheme: 'light',
   colorPrimary: '#1890ff',
   layout: 'mix',
