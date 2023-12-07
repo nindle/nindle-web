@@ -12,12 +12,6 @@
  */
 export default [
   {
-    path: '/login',
-    name: '登录',
-    layout: false,
-    component: './Login',
-  },
-  {
     path: '/welcome',
     name: '首页',
     icon: 'HomeOutlined',
@@ -25,107 +19,21 @@ export default [
   },
   {
     path: '/lead',
-    name: '线索管理',
+    name: '博客',
     icon: 'BranchesOutlined',
-    access: 'lead',
-    routes: [
-      {
-        path: '/lead/my',
-        name: '我的线索',
-        access: 'lead:my',
-        component: './Lead/My',
-      },
-      {
-        path: '/lead/public',
-        name: '公海线索',
-        access: 'lead:public',
-        component: './Lead/Public',
-      },
-      {
-        path: '/lead/invalid',
-        name: '无效线索',
-        access: 'lead:invalid',
-        component: './Lead/Invalid',
-      },
-    ],
+    component: './Welcome',
   },
   {
     path: '/customer',
-    name: '客户管理',
+    name: '项目',
     icon: 'TeamOutlined',
-    access: 'customer',
-    routes: [
-      {
-        path: '/customer/my',
-        name: '我的客户',
-        access: 'customer:my',
-        component: './Customer/My',
-      },
-      {
-        path: '/customer/list',
-        name: '客户列表',
-        access: 'customer:list',
-        component: './Customer/List',
-      },
-      {
-        path: '/customer/public',
-        name: '公海客户',
-        access: 'customer:public',
-        component: './Customer/Public',
-      },
-    ],
+    component: './Customer/My',
   },
   {
     path: '/order',
-    name: '订单管理',
+    name: '技术',
     icon: 'AuditOutlined',
-    access: 'order',
-    routes: [
-      {
-        path: '/order/list',
-        name: '订单列表',
-        access: 'order:list',
-        component: './Order/List',
-      },
-      {
-        path: '/order/receivable',
-        name: '应收款订单',
-        access: 'order:receivable',
-        component: './Order/Receivable',
-      },
-    ],
-  },
-  {
-    path: '/system',
-    name: '系统管理',
-    icon: 'SettingOutlined',
-    access: 'system',
-    routes: [
-      {
-        path: '/system/user',
-        name: '用户管理',
-        access: 'system:user',
-        component: './System/User',
-      },
-      {
-        path: '/system/role',
-        name: '角色管理',
-        access: 'system:role',
-        component: './System/Role',
-      },
-      {
-        path: '/system/department',
-        name: '部门管理',
-        access: 'system:department',
-        component: './System/Department',
-      },
-      {
-        path: '/system/permission',
-        name: '权限管理',
-        access: 'system:permission',
-        component: './System/Permission',
-      },
-    ],
+    component: './Order/List',
   },
   {
     path: '/',
