@@ -21,7 +21,7 @@ const Header = () => {
             .map((item, index) => {
               return (
                 <div
-                  className="mx-[30px] w-[100px] text-center text-[#FFF] text-[16px] hover:text-[#a94b4b]"
+                  className="mx-[30px] w-[100px] cursor-pointer text-center text-[#FFF] text-[16px] hover:text-[#a94b4b]"
                   key={index}
                   onClick={() => history.push(item.path)}
                 >
