@@ -1,10 +1,7 @@
 import type { Settings as LayoutSettings } from "@ant-design/pro-components"
 import type { RunTimeLayoutConfig } from "@umijs/max"
-import { history } from "@umijs/max"
 import defaultSettings from "../config/defaultSettings"
 import { errorConfig } from "./requestErrorConfig"
-import { LOGIN_PATH } from "@/constants"
-import { getUserProfile } from "@/services/system/user"
 import Header from "@/components/Header"
 export interface InitialState {
   loading?: boolean
@@ -29,11 +26,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       locale: false,
     },
     layout: "top",
-    // 默认布局调整
-    rightContentRender: () => <></>,
-    // footerRender: () => <div>34534</div>,
-    menuHeaderRender: () => <></>,
-    headerContentRender: () => <Header />,
+    fixedHeader: true,
+    token: {
+      pageContainer: {
+        paddingBlockPageContainerContent: 0,
+        paddingInlinePageContainerContent: 0,
+      },
+    },
+    headerRender: () => <Header />,
     // ...initialState?.settings,
   }
 }
