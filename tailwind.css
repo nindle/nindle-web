@@ -17,3 +17,7 @@
 .ant-modal-body {
   padding-top: 16px;
 }
+
+.ant-pro-layout .ant-layout-header.ant-pro-layout-header {
+  backdrop-filter: blur(0);
+}

@@ -6,7 +6,7 @@ const { Search } = Input
 
 const Header = () => {
   return (
-    <div className="w-full bg-black">
+    <div className="w-full">
       <div className="flex justify-between items-center w-[1440px] m-auto">
         <div className="flex items-center">
           <img src={logo} alt="" className="w-[40px] h-[40px] rounded-[5px]" />

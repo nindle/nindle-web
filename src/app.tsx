@@ -28,6 +28,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     layout: "top",
     fixedHeader: true,
     token: {
+      bgLayout:
+        "url(https://img.nindle.me/bg.jpg) no-repeat center center/cover",
+      header: {
+        colorBgHeader: "rgba(0,0,0,0)",
+      },
       pageContainer: {
         paddingBlockPageContainerContent: 0,
         paddingInlinePageContainerContent: 0,
