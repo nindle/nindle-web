@@ -1,12 +1,30 @@
 import { history } from "@umijs/max"
+import { useEffect, useRef, useState } from "react"
 import routes from "../../../config/routes"
 import logo from "../../favicon.svg"
 import { Input } from "antd"
 const { Search } = Input
 
 const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+    window.addEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
   return (
-    <div className="w-full">
+    <div className={`w-full ${isScrolled ? "header" : ""}`}>
       <div className="flex justify-between items-center w-[1440px] m-auto">
         <div className="flex items-center">
           <img src={logo} alt="" className="w-[40px] h-[40px] rounded-[5px]" />
@@ -32,11 +50,7 @@ const Header = () => {
         </div>
 
         <div className="w-[20%] flex items-center">
-          <Search
-            placeholder="input search text"
-            size="large"
-            className="w-full"
-          />
+          <Search placeholder="检索站内信息" size="large" className="w-full" />
         </div>
       </div>
     </div>
