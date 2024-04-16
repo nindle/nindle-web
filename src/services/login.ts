@@ -1,7 +1,7 @@
 import { request } from "@umijs/max"
 
 export function login(data: any) {
-  return request("/api/task/list", {
+  return request("/task/list", {
     method: "GET",
   })
 }

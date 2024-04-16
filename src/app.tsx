@@ -49,7 +49,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request = {
-  baseURL:
-    process.env["NODE_ENV"] !== "development" && "https://121.41.117.26:6200",
+  baseURL: "https://121.41.117.26:6200",
   ...errorConfig,
 }
