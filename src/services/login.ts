@@ -1,15 +1,14 @@
-import { request } from '@umijs/max'
+import { request } from "@umijs/max"
 
 export function login(data: any) {
-  return request('/api/login', {
-    method: 'POST',
-    data,
+  return request("/api/task/list", {
+    method: "GET",
   })
 }
 
 export function refresh(data: any) {
-  return request('/api/refresh', {
-    method: 'POST',
+  return request("/api/refresh", {
+    method: "POST",
     data,
   })
 }
