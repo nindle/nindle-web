@@ -1,4 +1,4 @@
-import { history } from "@umijs/max"
+import { history, useLocation } from "@umijs/max"
 import { useEffect, useState } from "react"
 import routes from "../../../config/routes"
 import logo from "../../favicon.svg"
@@ -6,6 +6,7 @@ import logo from "../../favicon.svg"
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,42 +28,62 @@ const Header = () => {
     setMobileMenuOpen(false)
   }
 
+  // 使用useLocation获取当前路径，优化路径匹配逻辑
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/'
+    }
+
+    // 完整路径匹配或直接子路径匹配（避免/notes匹配到/notesxyz这样的情况）
+    return location.pathname === path ||
+           (location.pathname.startsWith(path) &&
+            (location.pathname[path.length] === '/' || location.pathname.length === path.length))
+  }
+
   return (
-    <header className={`w-full fixed top-0 left-0 z-50 transition-all py-2 duration-300 ${
+    <header className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${
       isScrolled ? "bg-gray-900/95 shadow-lg backdrop-blur-sm" : "bg-transparent"
     }`}>
       <div className="max-w-[1440px] mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center">
-          <img src={logo} alt="Nindle Logo" className="w-[40px] h-[40px] rounded-[5px]" />
+        <div className="flex items-center cursor-pointer h-full" onClick={() => handleNavigation('/')}>
+          <img src={logo} alt="Nindle Logo" className="w-[36px] h-[36px] rounded-[5px]" />
           <div className="text-white text-xl font-medium ml-3">
             Nindle
           </div>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center">
+        {/* 桌面导航 */}
+        <nav className="hidden md:flex items-center h-full">
           {routes
             .filter((e) => e.name)
-            .map((item, index) => (
-              <div
-                className={`mx-4 px-2 py-1 cursor-pointer text-center text-white text-base font-medium hover:text-blue-400 transition-colors ${
-                  window.location.pathname === item.path ? "border-b-2 border-blue-500" : ""
-                }`}
-                key={index}
-                onClick={() => handleNavigation(item.path)}
-              >
-                {item.name}
-              </div>
-            ))}
+            .map((item, index) => {
+              const active = isActive(item.path);
+              return (
+                <div
+                  className={`mx-4 px-3 h-full flex items-center justify-center cursor-pointer text-center text-white font-medium transition-all duration-300 relative ${
+                    active
+                      ? "text-blue-300 font-semibold"
+                      : "hover:text-blue-400"
+                  }`}
+                  key={index}
+                  onClick={() => handleNavigation(item.path)}
+                >
+                  <span>{item.name}</span>
+                  {active && (
+                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></span>
+                  )}
+                </div>
+              );
+            })}
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* 移动菜单按钮 */}
         <div className="md:hidden">
           <button
             className="text-white p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label="切换菜单"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -91,23 +112,28 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* 移动导航 */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-gray-900/95 backdrop-blur-sm">
           <div className="px-4 py-3 space-y-2">
             {routes
               .filter((e) => e.name)
-              .map((item, index) => (
-                <div
-                  className={`block py-3 px-4 text-base font-medium cursor-pointer ${
-                    window.location.pathname === item.path ? "text-blue-400" : "text-white"
-                  }`}
-                  key={index}
-                  onClick={() => handleNavigation(item.path)}
-                >
-                  {item.name}
-                </div>
-              ))}
+              .map((item, index) => {
+                const active = isActive(item.path);
+                return (
+                  <div
+                    className={`block py-3 px-4 text-base font-medium cursor-pointer transition-all duration-200 ${
+                      active
+                        ? "text-blue-400 bg-blue-900/30 rounded-md pl-6"
+                        : "text-white hover:bg-gray-800/30 hover:pl-5 rounded-md"
+                    }`}
+                    key={index}
+                    onClick={() => handleNavigation(item.path)}
+                  >
+                    {item.name}
+                  </div>
+                );
+              })}
           </div>
         </div>
       )}

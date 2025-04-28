@@ -19,8 +19,10 @@ import {
   MessageOutlined,
   SmileOutlined,
   LikeOutlined,
-  LikeFilled
+  LikeFilled,
+  CommentOutlined
 } from "@ant-design/icons"
+import LazyImage from '@/components/LazyImage'
 
 const { Title, Paragraph, Text } = Typography
 const { TextArea } = Input
@@ -45,7 +47,8 @@ const CommentItem = ({
   content,
   datetime,
   actions,
-  children
+  children,
+  isAuthor = false
 }: {
   author: React.ReactNode
   avatar: React.ReactNode
@@ -53,6 +56,7 @@ const CommentItem = ({
   datetime: React.ReactNode
   actions?: React.ReactNode[]
   children?: React.ReactNode
+  isAuthor?: boolean
 }) => {
   return (
     <div className="flex">
@@ -60,13 +64,16 @@ const CommentItem = ({
         {avatar}
       </div>
       <div className="flex-1 overflow-hidden">
-        <div className="mb-1">
+        <div className="mb-1 flex items-center">
           <span className="font-medium mr-2">{author}</span>
+          {isAuthor && (
+            <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full mr-2">作者</span>
+          )}
           <span className="text-gray-400 text-sm">{datetime}</span>
         </div>
-        <div className="text-gray-700 mb-2">{content}</div>
+        <div className="text-gray-700 mb-3">{content}</div>
         {actions && actions.length > 0 && (
-          <div className="mb-2 flex gap-4">
+          <div className="mb-2 flex gap-2">
             {actions}
           </div>
         )}
@@ -210,17 +217,21 @@ export default memo(() => {
         </div>
 
         {/* 留言表单 */}
-        <Card className="mb-12 shadow-sm">
-          <Title level={4} className="mb-6">
-            <MessageOutlined className="mr-2" />
-            写下你的留言
-          </Title>
+        <Card className="mb-12 shadow-md rounded-xl border-0 overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-100 to-blue-50 -m-6 mb-6 p-6">
+            <Title level={4} className="mb-2 flex items-center">
+              <MessageOutlined className="mr-2 text-blue-500" />
+              写下你的留言
+            </Title>
+            <Text type="secondary">分享你的想法、问题或建议</Text>
+          </div>
 
           <Form
             form={form}
             name="message-form"
             onFinish={handleSubmit}
             layout="vertical"
+            className="px-1"
           >
             <div className="flex flex-wrap gap-4">
               <Form.Item
@@ -232,6 +243,7 @@ export default memo(() => {
                   prefix={<UserOutlined className="text-gray-400" />}
                   placeholder="你的名字"
                   size="large"
+                  className="rounded-lg border border-gray-200 hover:border-blue-300 transition-colors"
                 />
               </Form.Item>
 
@@ -243,6 +255,7 @@ export default memo(() => {
                   prefix={<MailOutlined className="text-gray-400" />}
                   placeholder="你的邮箱（选填）"
                   size="large"
+                  className="rounded-lg border border-gray-200 hover:border-blue-300 transition-colors"
                 />
               </Form.Item>
             </div>
@@ -256,6 +269,7 @@ export default memo(() => {
                 rows={4}
                 showCount
                 maxLength={500}
+                className="rounded-lg text-base resize-none border border-gray-200 hover:border-blue-300 transition-colors"
               />
             </Form.Item>
 
@@ -267,6 +281,7 @@ export default memo(() => {
                   size="large"
                   loading={submitting}
                   icon={<MessageOutlined />}
+                  className="rounded-lg px-8 h-10 shadow-md hover:shadow-lg transition-all bg-blue-500 hover:bg-blue-600 border-0"
                 >
                   发表留言
                 </Button>
@@ -277,57 +292,128 @@ export default memo(() => {
 
         {/* 留言列表 */}
         <div>
-          <Title level={4} className="mb-6">
-            <span className="border-b-2 border-blue-500 pb-2">
-              全部留言 ({messages.length})
+          <Title level={3} className="mb-8 flex items-center">
+            <span className="w-1 h-6 bg-blue-500 mr-2 rounded"></span>
+            <span className="text-gray-800 flex items-center">
+              全部留言 <span className="text-blue-500 ml-2 text-lg">({messages.length})</span>
             </span>
           </Title>
 
           <List
             itemLayout="vertical"
             dataSource={messages}
-            renderItem={item => (
-              <Card className="mb-6 shadow-sm">
+            locale={{ emptyText: (
+              <div className="text-center py-16 bg-gray-50 rounded-lg">
+                <SmileOutlined className="text-5xl text-gray-300 mb-3" />
+                <p className="text-gray-500">还没有留言，来发表第一条吧！</p>
+              </div>
+            )}}
+            renderItem={(item, index) => (
+              <Card
+                className="mb-6 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border-0 overflow-hidden"
+                style={{
+                  animationName: 'fadeIn',
+                  animationDuration: '0.8s',
+                  animationFillMode: 'both',
+                  animationDelay: `${index * 0.1}s`
+                }}
+                bodyStyle={{ padding: '20px' }}
+              >
                 <CommentItem
-                  author={<Text strong>{item.author}</Text>}
-                  avatar={<Avatar src={item.avatar} alt={item.author} size={48} />}
-                  content={<Paragraph>{item.content}</Paragraph>}
+                  author={<Text strong className="text-gray-800 text-base">{item.author}</Text>}
+                  avatar={
+                    <div className="relative">
+                      <Avatar
+                        src={item.avatar}
+                        alt={item.author}
+                        size={48}
+                        className="border-2 border-white shadow-sm"
+                      />
+                      {item.replies && item.replies.length > 0 && (
+                        <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center bg-blue-500 text-white text-xs rounded-full shadow-sm">
+                          {item.replies.length}
+                        </div>
+                      )}
+                    </div>
+                  }
+                  content={
+                    <div className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow transition-all">
+                      {item.content}
+                    </div>
+                  }
                   datetime={<span className="text-gray-400 text-sm">{item.datetime}</span>}
                   actions={[
-                    <Tooltip key="like" title="点赞">
-                      <span onClick={() => handleLike(item.id)} className="cursor-pointer">
-                        {item.liked ? <LikeFilled className="text-blue-500" /> : <LikeOutlined />}
+                    <Tooltip key="like" title={item.liked ? "取消点赞" : "点赞"}>
+                      <button
+                        onClick={() => handleLike(item.id)}
+                        className={`cursor-pointer py-1 px-3 rounded-full transition-all flex items-center border-0 ${
+                          item.liked
+                            ? 'text-blue-500 bg-blue-50 hover:bg-blue-100'
+                            : 'text-gray-500 hover:bg-gray-100'
+                        }`}
+                      >
+                        {item.liked ? <LikeFilled /> : <LikeOutlined />}
                         <span className="ml-1">{item.likes}</span>
-                      </span>
+                      </button>
+                    </Tooltip>,
+                    <Tooltip key="reply" title="回复">
+                      <button className="cursor-pointer py-1 px-3 rounded-full transition-all text-gray-500 hover:bg-gray-100 flex items-center border-0">
+                        <CommentOutlined />
+                        <span className="ml-1">回复</span>
+                      </button>
                     </Tooltip>
                   ]}
                 >
                   {/* 回复列表 */}
                   {item.replies && item.replies.length > 0 && (
-                    <div className="mt-4 pl-4 border-l-2 border-gray-100">
-                      {item.replies.map(reply => (
-                        <CommentItem
-                          key={reply.id}
-                          author={<Text strong className="text-blue-500">{reply.author}</Text>}
-                          avatar={<Avatar src={reply.avatar} alt={reply.author} size={36} />}
-                          content={<Paragraph>{reply.content}</Paragraph>}
-                          datetime={<span className="text-gray-400 text-sm">{reply.datetime}</span>}
-                          actions={[
-                            <Tooltip key="like" title="点赞">
-                              <span onClick={() => handleLike(reply.id)} className="cursor-pointer">
-                                {reply.liked ? <LikeFilled className="text-blue-500" /> : <LikeOutlined />}
-                                <span className="ml-1">{reply.likes}</span>
-                              </span>
-                            </Tooltip>
-                          ]}
-                        />
-                      ))}
+                    <div className="mt-5 relative">
+                      <div className="absolute left-[-24px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-300 to-blue-100"></div>
+                      <div className="space-y-5">
+                        {item.replies.map(reply => (
+                          <div
+                            key={reply.id}
+                            className="bg-blue-50 rounded-lg p-4 shadow-sm"
+                          >
+                            <CommentItem
+                              isAuthor={reply.author === "Nindle"}
+                              author={<Text strong className={reply.author === "Nindle" ? "text-blue-600" : "text-gray-700"}>{reply.author}</Text>}
+                              avatar={<Avatar src={reply.avatar} alt={reply.author} size={36} className="border-2 border-white shadow-sm" />}
+                              content={<div className="text-gray-700">{reply.content}</div>}
+                              datetime={<span className="text-gray-400 text-sm">{reply.datetime}</span>}
+                              actions={[
+                                <Tooltip key="like" title={reply.liked ? "取消点赞" : "点赞"}>
+                                  <button
+                                    onClick={() => handleLike(reply.id)}
+                                    className={`cursor-pointer py-1 px-3 rounded-full transition-all flex items-center border-0 ${
+                                      reply.liked
+                                        ? 'text-blue-500 bg-white hover:bg-blue-100'
+                                        : 'text-gray-500 hover:bg-white'
+                                    }`}
+                                  >
+                                    {reply.liked ? <LikeFilled /> : <LikeOutlined />}
+                                    <span className="ml-1">{reply.likes}</span>
+                                  </button>
+                                </Tooltip>
+                              ]}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </CommentItem>
               </Card>
             )}
           />
+
+          {/* 分页 */}
+          {messages.length > 5 && (
+            <div className="flex justify-center mt-8">
+              <Button type="primary" shape="round" className="shadow-sm border-0 bg-blue-500 hover:bg-blue-600">
+                加载更多
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,0 +1,347 @@
+/* 文章详情页样式 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(24, 144, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(24, 144, 255, 0);
+    }
+}
+
+.article-content {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.8;
+    color: #333;
+    font-size: 16px;
+    padding: 0 8px;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+    font-weight: 600;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.4;
+    color: #1a202c;
+}
+
+.article-content h1 {
+    font-size: 2em;
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: 0.3em;
+}
+
+.article-content h2 {
+    font-size: 1.75em;
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: 0.3em;
+}
+
+.article-content h3 {
+    font-size: 1.5em;
+}
+
+.article-content h4 {
+    font-size: 1.25em;
+}
+
+.article-content h5 {
+    font-size: 1em;
+}
+
+.article-content h6 {
+    font-size: 0.875em;
+    color: #6b7280;
+}
+
+.article-content p {
+    margin-bottom: 1.5em;
+    letter-spacing: 0.05em;
+}
+
+.article-content strong {
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.article-content em {
+    font-style: italic;
+}
+
+.article-content a {
+    color: #1890ff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px dashed rgba(24, 144, 255, 0.4);
+}
+
+.article-content a:hover {
+    color: #40a9ff;
+    border-bottom: 1px solid #40a9ff;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2em auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.article-content img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.article-content blockquote {
+    margin: 2em 0;
+    padding: 1em 1.5em;
+    border-left: 4px solid #1890ff;
+    background-color: #f8f9fa;
+    border-radius: 0 8px 8px 0;
+    color: #555;
+    font-style: italic;
+}
+
+.article-content blockquote p {
+    margin-bottom: 0;
+}
+
+.article-content pre {
+    margin: 1.5em 0;
+    padding: 1.5em;
+    background-color: #282c34;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+.article-content code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    padding: 0.2em 0.4em;
+    margin: 0 0.2em;
+    font-size: 0.9em;
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    color: #e83e8c;
+}
+
+.article-content pre>code {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    color: #abb2bf;
+    font-size: 1em;
+}
+
+.article-content ul,
+.article-content ol {
+    margin: 1.5em 0;
+    padding-left: 2em;
+}
+
+.article-content ul li,
+.article-content ol li {
+    margin-bottom: 0.5em;
+}
+
+.article-content table {
+    width: 100%;
+    margin: 2em 0;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.article-content table thead {
+    background-color: #f8f9fa;
+}
+
+.article-content table th {
+    padding: 0.75em 1em;
+    text-align: left;
+    font-weight: 600;
+    color: #1a202c;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.article-content table td {
+    padding: 0.75em 1em;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.article-content table tr:last-child td {
+    border-bottom: none;
+}
+
+.article-content table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.article-content hr {
+    height: 1px;
+    background-color: #e2e8f0;
+    border: none;
+    margin: 2em 0;
+}
+
+/* 自定义滚动条 */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .article-content {
+        font-size: 15px;
+    }
+
+    .article-content h1 {
+        font-size: 1.75em;
+    }
+
+    .article-content h2 {
+        font-size: 1.5em;
+    }
+
+    .article-content h3 {
+        font-size: 1.25em;
+    }
+
+    .article-content pre {
+        padding: 1em;
+    }
+
+    .article-content blockquote {
+        padding: 0.75em 1em;
+    }
+}
+
+/* 文章卡片悬浮效果 */
+.article-card {
+    transition: all 0.3s ease;
+}
+
+.article-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    transform: translateY(-2px);
+}
+
+/* 标签样式增强 */
+.article-tag {
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.article-tag:hover {
+    transform: scale(1.05);
+}
+
+/* 按钮交互效果 */
+.action-button {
+    transition: all 0.3s ease;
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+}
+
+.toc-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.toc-item:hover {
+    color: #1890ff !important;
+    background-color: rgba(24, 144, 255, 0.05);
+}
+
+.toc-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.toc-item:hover::before {
+    background-color: #1890ff;
+}
+
+.related-article {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.related-article:hover {
+    background-color: rgba(24, 144, 255, 0.05);
+    transform: translateX(4px);
+}
+
+.related-article::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #1890ff;
+    transition: all 0.3s ease;
+}
+
+.related-article:hover::after {
+    width: 100%;
+}

@@ -28,6 +28,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     layout: "top",
     fixedHeader: true,
     token: {
+      header: {
+        colorBgHeader: "#14192b",
+      },
       pageContainer: {
         paddingBlockPageContainerContent: 0,
         paddingInlinePageContainerContent: 0,

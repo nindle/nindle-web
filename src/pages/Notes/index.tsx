@@ -1,7 +1,8 @@
 import { memo, useEffect, useState } from "react"
-import { Typography, List, Card, Tag, Space, Row, Col, Pagination, Select } from "antd"
+import { Typography, List, Card, Tag, Space, Row, Col, Pagination, Select, Divider } from "antd"
 import { CalendarOutlined, UserOutlined, TagOutlined } from "@ant-design/icons"
 import { history } from "@umijs/max"
+import LazyImage from '@/components/LazyImage'
 
 const { Title, Paragraph, Text } = Typography
 const { Option } = Select
@@ -160,7 +161,7 @@ export default memo(() => {
     <div className="w-full bg-gradient-to-b from-gray-50 to-white min-h-screen pt-24 pb-16">
       <div className="w-full max-w-[1440px] mx-auto px-4">
         {/* 页面标题 */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <Title level={1} className="text-4xl font-bold mb-4">技术博客</Title>
           <Paragraph className="text-gray-500 max-w-2xl mx-auto text-lg">
             分享我在软件开发和Web技术领域的经验、见解和最新发现。
@@ -168,16 +169,17 @@ export default memo(() => {
         </div>
 
         {/* 分类筛选 */}
-        <div className="mb-10 flex justify-center">
-          <div className="inline-flex p-1 bg-gray-100 rounded-lg shadow-sm">
+        <div className="mb-12">
+          <Divider className="my-3" />
+          <div className="flex justify-center flex-wrap gap-3 max-w-4xl mx-auto">
             {categories.map(category => (
               <button
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 text-base rounded-md transition-all ${
+                className={`px-6 py-2.5 text-base rounded-full transition-all duration-200 border ${
                   selectedCategory === category || (category === 'all' && selectedCategory === 'all')
-                    ? 'bg-white shadow text-blue-600 font-medium'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-blue-500 text-white border-blue-500 shadow-md'
+                    : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                 }`}
               >
                 {category === "all" ? "全部分类" : category}
@@ -198,16 +200,16 @@ export default memo(() => {
                 onClick={() => handleArticleClick(article.id)}
                 cover={
                   <div className="h-[220px] overflow-hidden">
-                    <img
-                      alt={article.title}
+                    <LazyImage
                       src={article.coverImage}
+                      alt={article.title}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                     />
                   </div>
                 }
-                className="h-full shadow-sm hover:shadow-md transition-shadow"
+                className="h-full border-0 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                bodyStyle={{ padding: '16px' }}
               >
-                <Tag color="blue" className="mb-2">{article.category}</Tag>
                 <Title level={4} ellipsis={{ rows: 2 }} className="mb-2 text-lg leading-tight">
                   {article.title}
                 </Title>
@@ -216,15 +218,18 @@ export default memo(() => {
                   {article.summary}
                 </Paragraph>
 
-                <div className="flex justify-between items-center text-gray-400 text-xs">
+                <div className="flex justify-between items-center text-gray-400 text-xs pt-2 border-t border-gray-100">
                   <div className="flex items-center">
-                    <CalendarOutlined className="mr-1" />
-                    <span>{article.date}</span>
+                    <div className="flex items-center mr-4">
+                      <CalendarOutlined className="mr-1" />
+                      <span>{article.date}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <UserOutlined className="mr-1" />
+                      <span>{article.author}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <UserOutlined className="mr-1" />
-                    <span>{article.author}</span>
-                  </div>
+
                   <div className="flex items-center">
                     <TagOutlined className="mr-1" />
                     <span>{article.tags[0]}</span>
@@ -237,7 +242,7 @@ export default memo(() => {
 
         {/* 分页 */}
         {articles.length > 0 && (
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 mb-6">
             <Pagination
               current={currentPage}
               onChange={setCurrentPage}
@@ -250,8 +255,12 @@ export default memo(() => {
 
         {/* 无数据显示 */}
         {articles.length === 0 && !loading && (
-          <div className="text-center py-16">
-            <Title level={4} className="text-gray-500">没有找到相关文章</Title>
+          <div className="flex flex-col items-center justify-center py-16 px-4 bg-gray-50 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <Title level={4} className="text-gray-500 mb-1">暂无相关文章</Title>
+            <Text className="text-gray-400">请尝试更换其他分类查看</Text>
           </div>
         )}
       </div>

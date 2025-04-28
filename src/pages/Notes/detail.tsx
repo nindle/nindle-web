@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react"
+import { memo, useEffect, useState, useRef } from "react"
 import {
   Typography,
   Divider,
@@ -10,7 +10,11 @@ import {
   Skeleton,
   Affix,
   Tooltip,
-  message
+  message,
+  Row,
+  Col,
+  Input,
+  List
 } from "antd"
 import {
   CalendarOutlined,
@@ -22,10 +26,26 @@ import {
   ShareAltOutlined,
   BookOutlined,
   RollbackOutlined,
+  ClockCircleOutlined,
+  HeartOutlined,
+  HeartFilled,
+  MessageOutlined,
+  LeftOutlined,
+  RightOutlined
 } from "@ant-design/icons"
 import { useParams, history } from "@umijs/max"
+import LazyImage from '@/components/LazyImage'
+import dayjs from 'dayjs'
+import { motion } from 'framer-motion'
+import './detail.css'
 
 const { Title, Paragraph, Text } = Typography
+
+// 图标通用属性类型
+type IconProps = {
+  className?: string;
+  style?: React.CSSProperties;
+}
 
 // 文章详情接口
 interface ArticleDetail {
@@ -52,11 +72,13 @@ interface ArticleDetail {
   }[]
 }
 
-export default memo(() => {
+const NoteDetail = memo(() => {
   const { id } = useParams()
   const [article, setArticle] = useState<ArticleDetail | null>(null)
   const [loading, setLoading] = useState(true)
   const [liked, setLiked] = useState(false)
+  const [commentText, setCommentText] = useState('')
+  const articleRef = useRef<HTMLDivElement>(null)
 
   // 模拟文章数据
   const mockArticle: ArticleDetail = {
@@ -248,6 +270,19 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
     }, 800)
   }, [id])
 
+  // 滚动到指定标题
+  const scrollToHeading = (headingId: string) => {
+    if (!articleRef.current) return
+
+    // 修复以数字开头的ID选择器问题
+    // 使用attribute选择器而不是ID选择器
+    const element = articleRef.current.querySelector(`[id="${headingId}"]`)
+
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   // 处理点赞
   const handleLike = () => {
     if (!article) return
@@ -282,14 +317,23 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
     history.push('/notes')
   }
 
-  // 将Markdown内容转换为HTML（简化版）
+  // 将Markdown内容转换为HTML
   const renderMarkdown = (content: string) => {
     // 在实际项目中应使用markdown-it或其他库处理
     // 这里仅做简单示例
     const html = content
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+      .replace(/^# (.*$)/gm, (_, title) => {
+        const id = title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+        return `<h1 id="${id}">${title}</h1>`
+      })
+      .replace(/^## (.*$)/gm, (_, title) => {
+        const id = title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+        return `<h2 id="${id}">${title}</h2>`
+      })
+      .replace(/^### (.*$)/gm, (_, title) => {
+        const id = title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+        return `<h3 id="${id}">${title}</h3>`
+      })
       .replace(/\*\*(.*)\*\*/gm, '<strong>$1</strong>')
       .replace(/\*(.*)\*/gm, '<em>$1</em>')
       .replace(/```(jsx|js|tsx|ts|css|html)([\s\S]*?)```/gm, '<pre><code class="language-$1">$2</code></pre>')
@@ -299,161 +343,374 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
     return html
   }
 
+  const handleComment = () => {
+    // Implementation for handling comment submission
+    console.log("Comment submitted:", commentText)
+    message.success('评论已提交，等待审核')
+    setCommentText('')
+  }
+
+  if (loading) {
+    return (
+      <div style={{ background: '#f8f9fa', minHeight: '100vh', padding: '20px 0' }} className="custom-scrollbar">
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <Card bordered={false} style={{ borderRadius: '12px', marginBottom: '24px' }}>
+            <Skeleton active avatar paragraph={{ rows: 4 }} />
+          </Card>
+          <Row gutter={[24, 24]}>
+            <Col xs={24} lg={16}>
+              <Card bordered={false} style={{ borderRadius: '12px' }}>
+                <Skeleton active paragraph={{ rows: 15 }} />
+              </Card>
+            </Col>
+            <Col xs={24} lg={8}>
+              <Card bordered={false} style={{ borderRadius: '12px', marginBottom: '24px' }}>
+                <Skeleton active paragraph={{ rows: 5 }} />
+              </Card>
+              <Card bordered={false} style={{ borderRadius: '12px' }}>
+                <Skeleton active avatar paragraph={{ rows: 2 }} />
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    )
+  }
+
+  if (!article) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px 0' }}>
+        <Title level={3}>文章不存在或已被删除</Title>
+        <Button type="primary" onClick={handleBack}>返回文章列表</Button>
+      </div>
+    )
+  }
+
   return (
-    <div className="w-full bg-white min-h-screen py-10">
-      <div className="w-full max-w-[1200px] mx-auto px-4 flex flex-col md:flex-row gap-8">
-        {/* 主要内容区 */}
-        <div className="flex-1">
-          {loading ? (
-            <Skeleton active avatar paragraph={{ rows: 10 }} />
-          ) : article ? (
-            <div>
-              {/* 文章头部 */}
-              <div className="mb-8">
-                <Title level={1}>{article.title}</Title>
+    <div style={{ background: '#f8f9fa', minHeight: '100vh', padding: '20px 0' }} className="custom-scrollbar">
+      <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div
+            className="back-header"
+            onClick={() => history.push('/notes')}
+            style={{ padding: '16px 0', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          >
+            <LeftOutlined />
+            <span style={{ marginLeft: '8px' }}>返回文章列表</span>
+          </div>
+        </motion.div>
 
-                <div className="flex flex-wrap items-center gap-4 mt-4 text-gray-500">
-                  <div className="flex items-center">
-                    <Avatar src={article.avatar} size={32} className="mr-2" />
-                    <Text>{article.author}</Text>
-                  </div>
+        <Row gutter={[24, 24]}>
+          <Col xs={24} lg={16}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card
+                bordered={false}
+                style={{ marginBottom: '24px', borderRadius: '12px', overflow: 'hidden' }}
+                className="article-card"
+              >
+                <Title level={1} style={{ marginBottom: '16px', color: '#1a202c' }}>
+                  {article.title}
+                </Title>
 
-                  <div className="flex items-center">
-                    <CalendarOutlined className="mr-1" />
-                    <Text>{article.date}</Text>
-                  </div>
-
-                  <div className="flex items-center">
-                    <EyeOutlined className="mr-1" />
-                    <Text>{article.views} 阅读</Text>
-                  </div>
-
-                  <div className="flex items-center">
-                    <Tag color="blue">{article.category}</Tag>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+                  <Avatar src={article.avatar} size={40} />
+                  <div style={{ marginLeft: '12px' }}>
+                    <Text strong style={{ fontSize: '16px', display: 'block', color: '#1a202c' }}>
+                      {article.author}
+                    </Text>
+                    <Space size={8}>
+                      <Text type="secondary" style={{ fontSize: '14px' }}>
+                        <CalendarOutlined />
+                        <span style={{ marginLeft: '4px' }}>
+                          {dayjs(article.date).format('YYYY-MM-DD')}
+                        </span>
+                      </Text>
+                      <Text type="secondary" style={{ fontSize: '14px' }}>
+                        <EyeOutlined />
+                        <span style={{ marginLeft: '4px' }}>
+                          {article.views} 阅读
+                        </span>
+                      </Text>
+                    </Space>
                   </div>
                 </div>
-              </div>
 
-              {/* 封面图 */}
-              {article.coverImage && (
-                <div className="mb-8 overflow-hidden rounded-lg">
-                  <img
-                    src={article.coverImage}
-                    alt={article.title}
-                    className="w-full h-auto"
-                  />
+                {article.coverImage && (
+                  <div style={{ margin: '0 -24px 24px', overflow: 'hidden', borderRadius: '8px' }}>
+                    <img
+                      src={article.coverImage}
+                      alt={article.title}
+                      style={{
+                        width: '100%',
+                        objectFit: 'cover',
+                        height: '300px',
+                      }}
+                    />
+                  </div>
+                )}
+
+                <div className="article-content" ref={articleRef}>
+                  <div dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }} />
                 </div>
-              )}
 
-              {/* 文章内容 */}
-              <div
-                className="article-content prose prose-lg max-w-none mb-8"
-                dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
-              />
+                <Divider style={{ margin: '32px 0 24px' }} />
 
-              {/* 文章标签 */}
-              <div className="my-8">
-                <Space size={[0, 8]} wrap>
-                  <TagOutlined className="mr-2" />
-                  {article.tags.map(tag => (
-                    <Tag key={tag} color="blue">{tag}</Tag>
-                  ))}
-                </Space>
-              </div>
-
-              {/* 分享和点赞 */}
-              <div className="flex justify-center gap-4 my-12">
-                <Button
-                  type="primary"
-                  size="large"
-                  icon={liked ? <LikeFilled /> : <LikeOutlined />}
-                  onClick={handleLike}
-                >
-                  点赞 ({article.likes})
-                </Button>
-
-                <Button
-                  size="large"
-                  icon={<ShareAltOutlined />}
-                  onClick={handleShare}
-                >
-                  分享
-                </Button>
-
-                <Button
-                  size="large"
-                  icon={<RollbackOutlined />}
-                  onClick={handleBack}
-                >
-                  返回列表
-                </Button>
-              </div>
-
-              {/* 相关文章 */}
-              {article.related && article.related.length > 0 && (
-                <div className="mt-12">
-                  <Divider orientation="left">
-                    <Title level={4} className="mb-0">相关文章</Title>
-                  </Divider>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                    {article.related.map((item) => (
-                      <Card
-                        key={item.id}
-                        hoverable
-                        cover={
-                          <img
-                            alt={item.title}
-                            src={item.coverImage}
-                            className="h-[160px] object-cover"
-                          />
-                        }
-                        onClick={() => history.push(`/notes/${item.id}`)}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                    {article.tags.map((tag) => (
+                      <Tag
+                        key={tag}
+                        color="blue"
+                        style={{ padding: '4px 12px', borderRadius: '16px', fontSize: '14px' }}
+                        className="article-tag"
                       >
-                        <Card.Meta title={item.title} />
-                      </Card>
+                        <TagOutlined />
+                        <span style={{ marginLeft: '4px' }}>{tag}</span>
+                      </Tag>
                     ))}
                   </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <Title level={4} className="text-gray-500">找不到该文章</Title>
-              <Button
-                type="primary"
-                className="mt-4"
-                onClick={handleBack}
-              >
-                返回列表
-              </Button>
-            </div>
-          )}
-        </div>
 
-        {/* 侧边栏 */}
-        {!loading && article && article.toc && (
-          <div className="w-full md:w-72">
-            <Affix offsetTop={20}>
-              <Card title="目录" className="sticky top-20 w-full">
-                <div className="max-h-[calc(100vh-180px)] overflow-auto pr-2">
-                  {article.toc.map((item) => (
-                    <div
-                      key={item.id}
-                      className={`py-2 pl-${(item.level - 1) * 4} hover:text-blue-500 cursor-pointer`}
-                      onClick={() => {
-                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' })
-                      }}
-                    >
-                      {item.title}
-                    </div>
-                  ))}
+                  <div style={{ display: 'flex', gap: '16px' }}>
+                    <Tooltip title={liked ? '取消点赞' : '点赞'}>
+                      <Button
+                        type="text"
+                        icon={liked ? <HeartFilled style={{ color: '#f5222d' }} /> : <HeartOutlined />}
+                        onClick={handleLike}
+                        size="large"
+                        className="action-button"
+                      >
+                        <span style={{ marginLeft: '4px' }}>{article.likes}</span>
+                      </Button>
+                    </Tooltip>
+
+                    <Tooltip title="分享">
+                      <Button
+                        type="text"
+                        icon={<ShareAltOutlined />}
+                        onClick={handleShare}
+                        size="large"
+                        className="action-button"
+                      >
+                        <span style={{ marginLeft: '4px' }}>分享</span>
+                      </Button>
+                    </Tooltip>
+
+                    <Tooltip title="评论">
+                      <Button
+                        type="text"
+                        icon={<MessageOutlined />}
+                        onClick={() => document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })}
+                        size="large"
+                        className="action-button"
+                      >
+                        <span style={{ marginLeft: '4px' }}>评论</span>
+                      </Button>
+                    </Tooltip>
+                  </div>
                 </div>
               </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <Card
+                id="comments-section"
+                bordered={false}
+                style={{ borderRadius: '12px' }}
+                title={<Title level={4} style={{ margin: 0 }}>评论 (0)</Title>}
+                className="article-card"
+              >
+                <div style={{ marginBottom: '24px' }}>
+                  <Input.TextArea
+                    rows={4}
+                    placeholder="写下你的评论..."
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    style={{ borderRadius: '8px', resize: 'none' }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
+                    <Button
+                      type="primary"
+                      onClick={handleComment}
+                      disabled={!commentText.trim()}
+                      className="action-button"
+                    >
+                      发表评论
+                    </Button>
+                  </div>
+                </div>
+
+                <div style={{ textAlign: 'center', padding: '20px 0', color: '#666' }}>
+                  <MessageOutlined style={{ fontSize: '20px' }} />
+                  <p style={{ marginTop: '8px' }}>暂无评论，来发表第一条评论吧</p>
+                </div>
+              </Card>
+            </motion.div>
+          </Col>
+
+          <Col xs={24} lg={8}>
+            <Affix offsetTop={24}>
+              <div style={{ position: 'sticky', top: '24px' }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1 }}
+                >
+                  <Card
+                    bordered={false}
+                    style={{ marginBottom: '24px', borderRadius: '12px' }}
+                    title={<div style={{ display: 'flex', alignItems: 'center' }}><BookOutlined /> <span style={{ marginLeft: '8px' }}>文章目录</span></div>}
+                    className="article-card custom-scrollbar"
+                  >
+                    <div style={{ maxHeight: '300px', overflow: 'auto' }} className="custom-scrollbar">
+                      {article.toc?.map((item, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            marginLeft: `${(item.level - 1) * 16}px`,
+                            padding: '8px 0',
+                            cursor: 'pointer',
+                            paddingLeft: '12px',
+                          }}
+                          onClick={() => scrollToHeading(item.id)}
+                          className="toc-item"
+                        >
+                          {item.title}
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                >
+                  <Card
+                    bordered={false}
+                    style={{ marginBottom: '24px', borderRadius: '12px' }}
+                    title="作者信息"
+                    className="article-card"
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                      <Avatar src={article.avatar} size={64} />
+                      <div style={{ marginLeft: '16px' }}>
+                        <Title level={5} style={{ margin: 0 }}>
+                          {article.author}
+                        </Title>
+                        <Text type="secondary">
+                          {article.category} 领域创作者
+                        </Text>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }}>
+                      <Button type="primary" size="small" className="action-button">关注</Button>
+                      <Button size="small" className="action-button">查看主页</Button>
+                    </div>
+                  </Card>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.3 }}
+                >
+                  <Card
+                    bordered={false}
+                    style={{ borderRadius: '12px' }}
+                    title="相关文章"
+                    className="article-card"
+                  >
+                    <List
+                      itemLayout="vertical"
+                      dataSource={article.related}
+                      renderItem={item => (
+                        <List.Item
+                          key={item.id}
+                          style={{ padding: '12px 0', cursor: 'pointer' }}
+                          onClick={() => history.push(`/notes/${item.id}`)}
+                          className="related-article"
+                        >
+                          <div style={{ display: 'flex', gap: '12px' }}>
+                            {item.coverImage && (
+                              <img
+                                src={item.coverImage}
+                                alt={item.title}
+                                style={{
+                                  width: '80px',
+                                  height: '60px',
+                                  objectFit: 'cover',
+                                  borderRadius: '6px',
+                                }}
+                              />
+                            )}
+                            <div>
+                              <Text strong style={{ display: 'block', marginBottom: '4px' }}>
+                                {item.title}
+                              </Text>
+                              <Text type="secondary" style={{ fontSize: '12px' }}>
+                                <ClockCircleOutlined />
+                                <span style={{ marginLeft: '4px' }}>最近更新</span>
+                              </Text>
+                            </div>
+                          </div>
+                        </List.Item>
+                      )}
+                    />
+                  </Card>
+                </motion.div>
+              </div>
             </Affix>
-          </div>
-        )}
+          </Col>
+        </Row>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: '24px',
+            marginBottom: '48px',
+          }}
+        >
+          <Button
+            type="default"
+            size="large"
+            icon={<LeftOutlined />}
+            onClick={handleBack}
+            style={{ display: 'flex', alignItems: 'center' }}
+            className="action-button"
+          >
+            查看所有文章
+          </Button>
+
+          <Button
+            type="primary"
+            size="large"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            style={{ display: 'flex', alignItems: 'center' }}
+            className="action-button"
+          >
+            返回顶部
+          </Button>
+        </motion.div>
       </div>
     </div>
   )
 })
+
+export default NoteDetail
