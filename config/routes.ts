@@ -24,6 +24,11 @@ export default [
     component: './Notes',
   },
   {
+    path: '/notes/:id',
+    component: './Notes/detail',
+    hideInMenu: true,
+  },
+  {
     path: '/project',
     name: '项目',
     icon: 'TeamOutlined',
