@@ -55,6 +55,7 @@ interface ArticleDetail {
   date: string
   author: string
   avatar: string
+  authorUrl: string
   category: string
   tags: string[]
   views: number
@@ -225,7 +226,8 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
     `,
     date: "2023-10-15",
     author: "Nindle",
-    avatar: "/src/favicon.svg",
+    avatar: "https://img.nindle.cn/logo.png",
+    authorUrl: 'https://github.com/nindle',
     category: "前端",
     tags: ["React", "JavaScript", "前端框架"],
     views: 1258,
@@ -241,11 +243,6 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
         id: 3,
         title: "TypeScript高级类型技巧",
         coverImage: "https://picsum.photos/300/200?random=3"
-      },
-      {
-        id: 4,
-        title: "Next.js 13架构深度解析",
-        coverImage: "https://picsum.photos/300/200?random=4"
       }
     ],
     toc: [
@@ -561,7 +558,7 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
 
           <Col xs={24} lg={8}>
             <Affix offsetTop={24}>
-              <div style={{ position: 'sticky', top: '24px' }}>
+              <div style={{ position: 'sticky', top: '0', minHeight: '100vh', overflow: 'auto' }}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -615,9 +612,9 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                         </Text>
                       </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }}>
-                      <Button type="primary" size="small" className="action-button">关注</Button>
-                      <Button size="small" className="action-button">查看主页</Button>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }} className="ml-2">
+                      <Button type="primary" size="small" className="action-button" onClick={() => window.open(article.authorUrl, '_blank')}>关注</Button>
+                      <Button size="small" className="action-button" onClick={() => window.open(article.authorUrl, '_blank')}>查看主页</Button>
                     </div>
                   </Card>
                 </motion.div>

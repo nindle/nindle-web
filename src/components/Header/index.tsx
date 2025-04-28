@@ -27,7 +27,7 @@ const Header = () => {
 
   return (
     <header className={`w-full fixed h-full top-0 left-0 z-50 transition-all duration-300`}>
-      <div className="max-w-[1440px] h-full px-4 flex justify-between items-center">
+      <div className="max-w-[1440px] h-full mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center cursor-pointer h-full" onClick={() => handleNavigation('/')}>
           <img src={logo} alt="Nindle Logo" className="w-[36px] h-[36px] rounded-[5px]" />
