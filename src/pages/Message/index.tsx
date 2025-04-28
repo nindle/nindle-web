@@ -65,11 +65,11 @@ const CommentItem = ({
       </div>
       <div className="flex-1 overflow-hidden">
         <div className="mb-1 flex items-center">
-          <span className="font-medium mr-2">{author}</span>
+          <span className="font-medium mr-2 w-auto">{author}</span>
           {isAuthor && (
             <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full mr-2">作者</span>
           )}
-          <span className="text-gray-400 text-sm">{datetime}</span>
+          <span className="text-gray-400 text-sm hidden md:block">{datetime}</span>
         </div>
         <div className="text-gray-700 mb-3">{content}</div>
         {actions && actions.length > 0 && (
@@ -101,7 +101,7 @@ export default memo(() => {
         {
           id: 101,
           author: "Nindle",
-          avatar: "/src/favicon.svg",
+          avatar: "https://img.nindle.cn/logo.png",
           content: "谢谢支持！我会持续更新React相关内容的。",
           datetime: "2023-10-18 11:05",
           likes: 3
@@ -127,7 +127,7 @@ export default memo(() => {
         {
           id: 102,
           author: "Nindle",
-          avatar: "/src/favicon.svg",
+          avatar: "https://img.nindle.cn/logo.png",
           content: "感谢建议！我会尽量提高更新频率的。",
           datetime: "2023-10-15 14:20",
           likes: 2

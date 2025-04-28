@@ -675,39 +675,6 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
             </Affix>
           </Col>
         </Row>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '24px',
-            marginBottom: '48px',
-          }}
-        >
-          <Button
-            type="default"
-            size="large"
-            icon={<LeftOutlined />}
-            onClick={handleBack}
-            style={{ display: 'flex', alignItems: 'center' }}
-            className="action-button"
-          >
-            查看所有文章
-          </Button>
-
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            style={{ display: 'flex', alignItems: 'center' }}
-            className="action-button"
-          >
-            返回顶部
-          </Button>
-        </motion.div>
       </div>
     </div>
   )
