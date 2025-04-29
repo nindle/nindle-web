@@ -1,4 +1,4 @@
-import { memo, useEffect, useState, useRef } from "react"
+import { memo, useEffect, useState, useRef } from 'react'
 import {
   Typography,
   Divider,
@@ -15,7 +15,7 @@ import {
   Col,
   Input,
   List
-} from "antd"
+} from 'antd'
 import {
   CalendarOutlined,
   UserOutlined,
@@ -32,8 +32,8 @@ import {
   MessageOutlined,
   LeftOutlined,
   RightOutlined
-} from "@ant-design/icons"
-import { useParams, history } from "@umijs/max"
+} from '@ant-design/icons'
+import { useParams, history } from '@umijs/max'
 import LazyImage from '@/components/LazyImage'
 import dayjs from 'dayjs'
 import { motion } from 'framer-motion'
@@ -43,8 +43,8 @@ const { Title, Paragraph, Text } = Typography
 
 // 图标通用属性类型
 type IconProps = {
-  className?: string;
-  style?: React.CSSProperties;
+  className?: string
+  style?: React.CSSProperties
 }
 
 // 文章详情接口
@@ -73,7 +73,7 @@ interface ArticleDetail {
   }[]
 }
 
-const NoteDetail = memo(() => {
+const NoteDetail = () => {
   const { id } = useParams()
   const [article, setArticle] = useState<ArticleDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -84,7 +84,7 @@ const NoteDetail = memo(() => {
   // 模拟文章数据
   const mockArticle: ArticleDetail = {
     id: 1,
-    title: "React 18新特性解析与最佳实践",
+    title: 'React 18新特性解析与最佳实践',
     content: `
 # React 18 新特性解析
 
@@ -224,37 +224,41 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
 
 随着React生态系统逐渐适应这些新特性，我们可以期待看到更多创新的模式和实践出现。现在是时候开始探索这些新特性，并考虑如何将它们整合到你的应用中了。
     `,
-    date: "2023-10-15",
-    author: "Nindle",
-    avatar: "https://img.nindle.cn/logo.png",
+    date: '2023-10-15',
+    author: 'Nindle',
+    avatar: 'https://img.nindle.cn/logo.png',
     authorUrl: 'https://github.com/nindle',
-    category: "前端",
-    tags: ["React", "JavaScript", "前端框架"],
+    category: '前端',
+    tags: ['React', 'JavaScript', '前端框架'],
     views: 1258,
     likes: 86,
-    coverImage: "https://picsum.photos/1200/400?random=1",
+    coverImage: 'https://picsum.photos/1200/400?random=1',
     related: [
       {
         id: 2,
-        title: "使用TailwindCSS构建现代UI界面",
-        coverImage: "https://picsum.photos/300/200?random=2"
+        title: '使用TailwindCSS构建现代UI界面',
+        coverImage: 'https://picsum.photos/300/200?random=2'
       },
       {
         id: 3,
-        title: "TypeScript高级类型技巧",
-        coverImage: "https://picsum.photos/300/200?random=3"
+        title: 'TypeScript高级类型技巧',
+        coverImage: 'https://picsum.photos/300/200?random=3'
       }
     ],
     toc: [
-      { id: "react-18-新特性解析", title: "React 18 新特性解析", level: 1 },
-      { id: "自动批处理-automatic-batching", title: "自动批处理 (Automatic Batching)", level: 2 },
-      { id: "并发特性-concurrent-features", title: "并发特性 (Concurrent Features)", level: 2 },
-      { id: "1-usetransition-和-starttransition", title: "1. useTransition 和 startTransition", level: 3 },
-      { id: "2-usedeferredvalue", title: "2. useDeferredValue", level: 3 },
-      { id: "suspense改进", title: "Suspense改进", level: 2 },
-      { id: "新的客户端和服务器端渲染api", title: "新的客户端和服务器端渲染API", level: 2 },
-      { id: "react-18最佳实践", title: "React 18最佳实践", level: 2 },
-      { id: "结论", title: "结论", level: 2 }
+      { id: 'react-18-新特性解析', title: 'React 18 新特性解析', level: 1 },
+      { id: '自动批处理-automatic-batching', title: '自动批处理 (Automatic Batching)', level: 2 },
+      { id: '并发特性-concurrent-features', title: '并发特性 (Concurrent Features)', level: 2 },
+      {
+        id: '1-usetransition-和-starttransition',
+        title: '1. useTransition 和 startTransition',
+        level: 3
+      },
+      { id: '2-usedeferredvalue', title: '2. useDeferredValue', level: 3 },
+      { id: 'suspense改进', title: 'Suspense改进', level: 2 },
+      { id: '新的客户端和服务器端渲染api', title: '新的客户端和服务器端渲染API', level: 2 },
+      { id: 'react-18最佳实践', title: 'React 18最佳实践', level: 2 },
+      { id: '结论', title: '结论', level: 2 }
     ]
   }
 
@@ -285,7 +289,7 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
     if (!article) return
 
     const newLikes = liked ? article.likes - 1 : article.likes + 1
-    setArticle({...article, likes: newLikes})
+    setArticle({ ...article, likes: newLikes })
     setLiked(!liked)
 
     message.success(liked ? '已取消点赞' : '谢谢您的点赞！')
@@ -298,12 +302,13 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
         .share({
           title: article?.title,
           text: `查看这篇文章：${article?.title}`,
-          url: window.location.href,
+          url: window.location.href
         })
         .catch(() => message.info('分享功能需要HTTPS环境'))
     } else {
       // 复制当前链接到剪贴板
-      navigator.clipboard.writeText(window.location.href)
+      navigator.clipboard
+        .writeText(window.location.href)
         .then(() => message.success('链接已复制到剪贴板'))
         .catch(() => message.error('复制失败，请手动复制链接'))
     }
@@ -320,20 +325,32 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
     // 这里仅做简单示例
     const html = content
       .replace(/^# (.*$)/gm, (_, title) => {
-        const id = title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+        const id = title
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-')
         return `<h1 id="${id}">${title}</h1>`
       })
       .replace(/^## (.*$)/gm, (_, title) => {
-        const id = title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+        const id = title
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-')
         return `<h2 id="${id}">${title}</h2>`
       })
       .replace(/^### (.*$)/gm, (_, title) => {
-        const id = title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+        const id = title
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-')
         return `<h3 id="${id}">${title}</h3>`
       })
       .replace(/\*\*(.*)\*\*/gm, '<strong>$1</strong>')
       .replace(/\*(.*)\*/gm, '<em>$1</em>')
-      .replace(/```(jsx|js|tsx|ts|css|html)([\s\S]*?)```/gm, '<pre><code class="language-$1">$2</code></pre>')
+      .replace(
+        /```(jsx|js|tsx|ts|css|html)([\s\S]*?)```/gm,
+        '<pre><code class="language-$1">$2</code></pre>'
+      )
       .replace(/```([\s\S]*?)```/gm, '<pre><code>$1</code></pre>')
       .replace(/\n/gm, '<br>')
 
@@ -342,15 +359,21 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
 
   const handleComment = () => {
     // Implementation for handling comment submission
-    console.log("Comment submitted:", commentText)
+    console.log('Comment submitted:', commentText)
     message.success('评论已提交，等待审核')
     setCommentText('')
   }
 
   if (loading) {
     return (
-      <div style={{ background: '#f8f9fa', minHeight: '100vh', padding: '20px 0' }} className="custom-scrollbar">
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+      <div
+        style={{ background: '#f8f9fa', minHeight: '100vh', padding: '20px 0' }}
+        className="custom-scrollbar"
+      >
+        <div
+          className="container"
+          style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}
+        >
           <Card bordered={false} style={{ borderRadius: '12px', marginBottom: '24px' }}>
             <Skeleton active avatar paragraph={{ rows: 4 }} />
           </Card>
@@ -378,14 +401,22 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
     return (
       <div style={{ textAlign: 'center', padding: '50px 0' }}>
         <Title level={3}>文章不存在或已被删除</Title>
-        <Button type="primary" onClick={handleBack}>返回文章列表</Button>
+        <Button type="primary" onClick={handleBack}>
+          返回文章列表
+        </Button>
       </div>
     )
   }
 
   return (
-    <div style={{ background: '#f8f9fa', minHeight: '100vh', padding: '20px 0' }} className="custom-scrollbar">
-      <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+    <div
+      style={{ background: '#f8f9fa', minHeight: '100vh', padding: '20px 0' }}
+      className="custom-scrollbar"
+    >
+      <div
+        className="container"
+        style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -432,9 +463,7 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                       </Text>
                       <Text type="secondary" style={{ fontSize: '14px' }}>
                         <EyeOutlined />
-                        <span style={{ marginLeft: '4px' }}>
-                          {article.views} 阅读
-                        </span>
+                        <span style={{ marginLeft: '4px' }}>{article.views} 阅读</span>
                       </Text>
                     </Space>
                   </div>
@@ -448,7 +477,7 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                       style={{
                         width: '100%',
                         objectFit: 'cover',
-                        height: '300px',
+                        height: '300px'
                       }}
                     />
                   </div>
@@ -460,8 +489,17 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
 
                 <Divider style={{ margin: '32px 0 24px' }} />
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap'
+                  }}
+                >
+                  <div
+                    style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}
+                  >
                     {article.tags.map((tag) => (
                       <Tag
                         key={tag}
@@ -479,7 +517,9 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                     <Tooltip title={liked ? '取消点赞' : '点赞'}>
                       <Button
                         type="text"
-                        icon={liked ? <HeartFilled style={{ color: '#f5222d' }} /> : <HeartOutlined />}
+                        icon={
+                          liked ? <HeartFilled style={{ color: '#f5222d' }} /> : <HeartOutlined />
+                        }
                         onClick={handleLike}
                         size="large"
                         className="action-button"
@@ -504,7 +544,11 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                       <Button
                         type="text"
                         icon={<MessageOutlined />}
-                        onClick={() => document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() =>
+                          document
+                            .getElementById('comments-section')
+                            ?.scrollIntoView({ behavior: 'smooth' })
+                        }
                         size="large"
                         className="action-button"
                       >
@@ -525,7 +569,11 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                 id="comments-section"
                 bordered={false}
                 style={{ borderRadius: '12px' }}
-                title={<Title level={4} style={{ margin: 0 }}>评论 (0)</Title>}
+                title={
+                  <Title level={4} style={{ margin: 0 }}>
+                    评论 (0)
+                  </Title>
+                }
                 className="article-card"
               >
                 <div style={{ marginBottom: '24px' }}>
@@ -567,10 +615,17 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                   <Card
                     bordered={false}
                     style={{ marginBottom: '24px', borderRadius: '12px' }}
-                    title={<div style={{ display: 'flex', alignItems: 'center' }}><BookOutlined /> <span style={{ marginLeft: '8px' }}>文章目录</span></div>}
+                    title={
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <BookOutlined /> <span style={{ marginLeft: '8px' }}>文章目录</span>
+                      </div>
+                    }
                     className="article-card custom-scrollbar"
                   >
-                    <div style={{ maxHeight: '300px', overflow: 'auto' }} className="custom-scrollbar">
+                    <div
+                      style={{ maxHeight: '300px', overflow: 'auto' }}
+                      className="custom-scrollbar"
+                    >
                       {article.toc?.map((item, index) => (
                         <div
                           key={index}
@@ -578,7 +633,7 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                             marginLeft: `${(item.level - 1) * 16}px`,
                             padding: '8px 0',
                             cursor: 'pointer',
-                            paddingLeft: '12px',
+                            paddingLeft: '12px'
                           }}
                           onClick={() => scrollToHeading(item.id)}
                           className="toc-item"
@@ -607,14 +662,28 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                         <Title level={5} style={{ margin: 0 }}>
                           {article.author}
                         </Title>
-                        <Text type="secondary">
-                          {article.category} 领域创作者
-                        </Text>
+                        <Text type="secondary">{article.category} 领域创作者</Text>
                       </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }} className="ml-2">
-                      <Button type="primary" size="small" className="action-button" onClick={() => window.open(article.authorUrl, '_blank')}>关注</Button>
-                      <Button size="small" className="action-button" onClick={() => window.open(article.authorUrl, '_blank')}>查看主页</Button>
+                    <div
+                      style={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }}
+                      className="ml-2"
+                    >
+                      <Button
+                        type="primary"
+                        size="small"
+                        className="action-button"
+                        onClick={() => window.open(article.authorUrl, '_blank')}
+                      >
+                        关注
+                      </Button>
+                      <Button
+                        size="small"
+                        className="action-button"
+                        onClick={() => window.open(article.authorUrl, '_blank')}
+                      >
+                        查看主页
+                      </Button>
                     </div>
                   </Card>
                 </motion.div>
@@ -633,7 +702,7 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                     <List
                       itemLayout="vertical"
                       dataSource={article.related}
-                      renderItem={item => (
+                      renderItem={(item) => (
                         <List.Item
                           key={item.id}
                           style={{ padding: '12px 0', cursor: 'pointer' }}
@@ -649,7 +718,7 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
                                   width: '80px',
                                   height: '60px',
                                   objectFit: 'cover',
-                                  borderRadius: '6px',
+                                  borderRadius: '6px'
                                 }}
                               />
                             )}
@@ -675,6 +744,6 @@ React 18是一个重要的版本更新，它通过引入并发渲染机制和相
       </div>
     </div>
   )
-})
+}
 
-export default NoteDetail
+export default memo(NoteDetail)

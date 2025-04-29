@@ -29,7 +29,7 @@ export default defineConfig({
   theme: {
     // 如果不想要 configProvide 动态设置主题需要把这个设置为 default
     // 只有设置为 variable， 才能使用 configProvide 动态设置主色调
-    'root-entry-name': 'variable',
+    'root-entry-name': 'variable'
   },
   /**
    * @name moment 的国际化配置
@@ -69,7 +69,7 @@ export default defineConfig({
   title: 'Nindle',
   layout: {
     locale: true,
-    ...defaultSettings,
+    ...defaultSettings
   },
   /**
    * @name moment2dayjs 插件
@@ -78,7 +78,7 @@ export default defineConfig({
    */
   moment2dayjs: {
     preset: 'antd',
-    plugins: ['duration'],
+    plugins: ['duration']
   },
   /**
    * @name 国际化插件
@@ -89,7 +89,7 @@ export default defineConfig({
     default: 'zh-CN',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true,
+    baseNavigator: true
   },
   /**
    * @name antd 插件
@@ -115,10 +115,10 @@ export default defineConfig({
    */
   headScripts: [
     // 解决首次加载时白屏的问题
-    { src: '/scripts/loading.js', async: true },
+    { src: '/scripts/loading.js', async: true }
   ],
   mfsu: {
-    strategy: 'normal',
+    strategy: 'normal'
   },
-  tailwindcss: {},
+  tailwindcss: {}
 })

@@ -1,8 +1,8 @@
-import type { Settings as LayoutSettings } from "@ant-design/pro-components"
-import type { RunTimeLayoutConfig } from "@umijs/max"
-import defaultSettings from "../config/defaultSettings"
-import { errorConfig } from "./requestErrorConfig"
-import Header from "@/components/Header"
+import type { Settings as LayoutSettings } from '@ant-design/pro-components'
+import type { RunTimeLayoutConfig } from '@umijs/max'
+import defaultSettings from '../config/defaultSettings'
+import { errorConfig } from './requestErrorConfig'
+import Header from '@/components/Header'
 export interface InitialState {
   loading?: boolean
   settings?: Partial<LayoutSettings>
@@ -15,7 +15,7 @@ export interface InitialState {
  */
 export async function getInitialState(): Promise<InitialState> {
   return {
-    settings: defaultSettings as Partial<LayoutSettings>,
+    settings: defaultSettings as Partial<LayoutSettings>
   }
 }
 
@@ -23,20 +23,20 @@ export async function getInitialState(): Promise<InitialState> {
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     menu: {
-      locale: false,
+      locale: false
     },
-    layout: "top",
+    layout: 'top',
     fixedHeader: true,
     token: {
       header: {
-        colorBgHeader: "#14192b",
+        colorBgHeader: '#14192b'
       },
       pageContainer: {
         paddingBlockPageContainerContent: 0,
-        paddingInlinePageContainerContent: 0,
-      },
+        paddingInlinePageContainerContent: 0
+      }
     },
-    headerRender: () => <Header />,
+    headerRender: () => <Header />
     // ...initialState?.settings,
   }
 }
@@ -47,6 +47,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request = {
-  baseURL: "https://121.41.117.26:6200",
-  ...errorConfig,
+  baseURL: 'https://121.41.117.26:6200',
+  ...errorConfig
 }

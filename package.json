@@ -4,8 +4,9 @@
     "build": "max build",
     "dev": "max dev",
     "postinstall": "max setup",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}'"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",

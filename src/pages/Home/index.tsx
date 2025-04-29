@@ -1,13 +1,18 @@
-import { memo, useEffect } from "react"
-import { login } from "../../services/login"
-import { Card, Typography, Row, Col, Tag, Avatar, Button } from "antd"
-import { ArrowRightOutlined, ReadOutlined, FileTextOutlined, MessageOutlined } from "@ant-design/icons"
-import { history } from "@umijs/max"
+import { memo, useEffect } from 'react'
+import { login } from '../../services/login'
+import { Card, Typography, Row, Col, Tag, Avatar, Button } from 'antd'
+import {
+  ArrowRightOutlined,
+  ReadOutlined,
+  FileTextOutlined,
+  MessageOutlined
+} from '@ant-design/icons'
+import { history } from '@umijs/max'
 import LazyImage from '@/components/LazyImage'
 
 const { Title, Paragraph, Text } = Typography
 
-export default memo(() => {
+const HomePage = () => {
   useEffect(() => {
     login({})
   }, [])
@@ -16,28 +21,28 @@ export default memo(() => {
   const latestPosts = [
     {
       id: 1,
-      title: "React 18新特性解析",
-      date: "2023-10-15",
-      summary: "深入了解React 18的并发特性、自动批处理和新的Suspense SSR架构...",
-      tags: ["React", "前端", "JavaScript"],
-      image: "https://picsum.photos/300/200?random=1",
+      title: 'React 18新特性解析',
+      date: '2023-10-15',
+      summary: '深入了解React 18的并发特性、自动批处理和新的Suspense SSR架构...',
+      tags: ['React', '前端', 'JavaScript'],
+      image: 'https://picsum.photos/300/200?random=1'
     },
     {
       id: 2,
-      title: "使用TailwindCSS构建现代UI界面",
-      date: "2023-10-10",
-      summary: "TailwindCSS如何改变我们的CSS编写方式，以及如何高效利用它...",
-      tags: ["CSS", "TailwindCSS", "设计"],
-      image: "https://picsum.photos/300/200?random=2",
+      title: '使用TailwindCSS构建现代UI界面',
+      date: '2023-10-10',
+      summary: 'TailwindCSS如何改变我们的CSS编写方式，以及如何高效利用它...',
+      tags: ['CSS', 'TailwindCSS', '设计'],
+      image: 'https://picsum.photos/300/200?random=2'
     },
     {
       id: 3,
-      title: "TypeScript高级类型技巧",
-      date: "2023-10-05",
-      summary: "探索TypeScript中的条件类型、映射类型和类型体操技巧...",
-      tags: ["TypeScript", "编程", "前端"],
-      image: "https://picsum.photos/300/200?random=3",
-    },
+      title: 'TypeScript高级类型技巧',
+      date: '2023-10-05',
+      summary: '探索TypeScript中的条件类型、映射类型和类型体操技巧...',
+      tags: ['TypeScript', '编程', '前端'],
+      image: 'https://picsum.photos/300/200?random=3'
+    }
   ]
 
   return (
@@ -47,14 +52,24 @@ export default memo(() => {
         {/* 几何背景元素 - 增强动画效果 */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20">
           <div className="absolute w-96 h-96 rounded-full bg-blue-400 -top-20 -left-20 animate-pulse"></div>
-          <div className="absolute w-80 h-80 rounded-full bg-purple-400 bottom-10 right-10 animate-pulse" style={{ animationDelay: "1s" }}></div>
-          <div className="absolute w-60 h-60 rounded-full bg-indigo-400 top-40 right-1/4 animate-pulse" style={{ animationDelay: "0.5s" }}></div>
+          <div
+            className="absolute w-80 h-80 rounded-full bg-purple-400 bottom-10 right-10 animate-pulse"
+            style={{ animationDelay: '1s' }}
+          ></div>
+          <div
+            className="absolute w-60 h-60 rounded-full bg-indigo-400 top-40 right-1/4 animate-pulse"
+            style={{ animationDelay: '0.5s' }}
+          ></div>
         </div>
 
         <div className="w-full max-w-[1440px] mx-auto px-6 relative z-10">
           <div className="text-center">
             <div className="animate-fadeIn">
-              <Title level={1} className="text-5xl md:text-6xl font-bold mb-6 text-white" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
+              <Title
+                level={1}
+                className="text-5xl md:text-6xl font-bold mb-6 text-white"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+              >
                 欢迎来到 Nindle 的博客
               </Title>
               <Paragraph className="text-xl text-blue-100 max-w-3xl mx-auto mb-10">
@@ -99,14 +114,17 @@ export default memo(() => {
         <div className="w-full max-w-[1440px] mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <Title level={2} className="mb-0 text-3xl font-bold group">
-              <span className="border-b-2 border-blue-500 pb-2 inline-block transition-all group-hover:border-purple-500">最新文章</span>
+              <span className="border-b-2 border-blue-500 pb-2 inline-block transition-all group-hover:border-purple-500">
+                最新文章
+              </span>
             </Title>
             <Button
               type="link"
               className="text-blue-500 hover:text-purple-600 transition-colors flex items-center"
               onClick={() => history.push('/notes')}
             >
-              查看全部 <ArrowRightOutlined className="ml-1 transition-transform group-hover:translate-x-1" />
+              查看全部{' '}
+              <ArrowRightOutlined className="ml-1 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
 
@@ -134,11 +152,22 @@ export default memo(() => {
                   }}
                 >
                   <div className="flex items-center mb-3">
-                    <Avatar size="small" className="bg-gradient-to-r from-blue-500 to-purple-500 mr-2">N</Avatar>
-                    <Text type="secondary" className="text-sm">{post.date}</Text>
+                    <Avatar
+                      size="small"
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 mr-2"
+                    >
+                      N
+                    </Avatar>
+                    <Text type="secondary" className="text-sm">
+                      {post.date}
+                    </Text>
                   </div>
 
-                  <Typography.Title level={4} ellipsis={{ rows: 2 }} className="mb-2 transition-colors hover:text-blue-700">
+                  <Typography.Title
+                    level={4}
+                    ellipsis={{ rows: 2 }}
+                    className="mb-2 transition-colors hover:text-blue-700"
+                  >
                     {post.title}
                   </Typography.Title>
 
@@ -147,12 +176,8 @@ export default memo(() => {
                   </Paragraph>
 
                   <div className="mt-auto pt-2">
-                    {post.tags.map(tag => (
-                      <Tag
-                        color="blue"
-                        key={tag}
-                        className="mr-1 transition-all hover:scale-105"
-                      >
+                    {post.tags.map((tag) => (
+                      <Tag color="blue" key={tag} className="mr-1 transition-all hover:scale-105">
                         {tag}
                       </Tag>
                     ))}
@@ -173,18 +198,29 @@ export default memo(() => {
               关于这个博客
             </Title>
             <Paragraph className="text-lg text-gray-700 mb-6">
-              这个博客使用React、UmiJS、Ant Design和TailwindCSS构建，旨在分享我的编程经验和学习笔记。
+              这个博客使用React、UmiJS、Ant
+              Design和TailwindCSS构建，旨在分享我的编程经验和学习笔记。
               如果您有任何问题或建议，欢迎在留言板与我交流！
             </Paragraph>
             <div className="flex flex-wrap gap-3">
-              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">React</Tag>
-              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">UmiJS</Tag>
-              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">Ant Design</Tag>
-              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">TailwindCSS</Tag>
+              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">
+                React
+              </Tag>
+              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">
+                UmiJS
+              </Tag>
+              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">
+                Ant Design
+              </Tag>
+              <Tag color="green" className="px-3 py-1 text-base transition-all hover:scale-105">
+                TailwindCSS
+              </Tag>
             </div>
           </div>
         </div>
       </div>
     </div>
   )
-})
+}
+
+export default memo(HomePage)

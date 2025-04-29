@@ -6,5 +6,5 @@ export enum EnumStorageKey {
   // 用户账号密码
   CREDENTIALS = '__CREDENTIALS__',
   // 用户信息
-  USER_INFO = '__USER_INFO__',
+  USER_INFO = '__USER_INFO__'
 }

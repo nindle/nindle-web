@@ -15,34 +15,34 @@ export default [
     path: '/',
     name: '首页',
     icon: 'HomeOutlined',
-    component: './Home',
+    component: './Home'
   },
   {
     path: '/notes',
     name: '笔记',
     icon: 'BranchesOutlined',
-    component: './Notes',
+    component: './Notes'
   },
   {
     path: '/notes/:id',
     component: './Notes/detail',
-    hideInMenu: true,
+    hideInMenu: true
   },
   {
     path: '/project',
     name: '项目',
     icon: 'TeamOutlined',
-    component: './Project',
+    component: './Project'
   },
   {
     path: '/message',
     name: '留言板',
     icon: 'AuditOutlined',
-    component: './Message',
+    component: './Message'
   },
   {
     path: '*',
     layout: false,
-    component: './404',
-  },
+    component: './404'
+  }
 ]

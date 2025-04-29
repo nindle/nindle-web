@@ -11,13 +11,13 @@
  */
 export default {
   dev: {
-    "/api": {
+    '/api': {
       // 要代理的地址
-      target: "https://121.41.117.26:6200",
+      target: 'https://121.41.117.26:6200',
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
-      pathRewrite: { "^/api": "" },
-      secure: false, // 如果是 https，但证书是自签名的，需要设置此项
-    },
-  },
+      pathRewrite: { '^/api': '' },
+      secure: false // 如果是 https，但证书是自签名的，需要设置此项
+    }
+  }
 }

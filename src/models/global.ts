@@ -5,7 +5,7 @@ const useUser = () => {
   const [name, setName] = useState<string>('')
   return {
     name,
-    setName,
+    setName
   }
 }
 

@@ -3,26 +3,26 @@ import { request } from '@umijs/max'
 export function createUser(data: any) {
   return request('/api/user', {
     method: 'POST',
-    data,
+    data
   })
 }
 
 export function queryUser(params: any) {
   return request('/api/user', {
     method: 'GET',
-    params,
+    params
   })
 }
 
 export function getUserProfile() {
   return request('/api/user/profile', {
-    method: 'GET',
+    method: 'GET'
   })
 }
 
 export function updateUser(id: number, data: any) {
   return request(`/api/user/${id}`, {
     method: 'PATCH',
-    data,
+    data
   })
 }
